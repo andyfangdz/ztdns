@@ -11,3 +11,4 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /ztdns .
 FROM scratch
 COPY --from=builder /ztdns ./
 ENTRYPOINT ["./ztdns"]
+EXPOSE 53
