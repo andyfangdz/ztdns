@@ -1,14 +1,17 @@
-FROM golang:latest AS builder
+FROM golang:alpine AS builder
 ADD https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 /usr/bin/dep
 RUN chmod +x /usr/bin/dep
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
 
 WORKDIR $GOPATH/src/github.com/andyfangdz/ztdns
 COPY Gopkg.toml Gopkg.lock ./
 RUN dep ensure --vendor-only
 COPY . ./
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix nocgo -o /ztdns .
+RUN go build -o /ztdns .
 
-FROM scratch
+FROM alpine
 COPY --from=builder /ztdns ./
 ENTRYPOINT ["./ztdns"]
 EXPOSE 53
