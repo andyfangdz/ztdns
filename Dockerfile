@@ -13,5 +13,7 @@ RUN go build -o /ztdns .
 
 FROM alpine
 COPY --from=builder /ztdns ./
+RUN apk add --no-cache ca-certificates && \
+    update-ca-certificates
 ENTRYPOINT ["./ztdns"]
 EXPOSE 53

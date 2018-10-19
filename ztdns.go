@@ -38,10 +38,19 @@ func getZTDomainAddresses() map[string]string {
 	ret := make(map[string]string)
 	var ztResponse MemberResponse
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", fmt.Sprintf("https://my.zerotier.com/api/network/%s/member", ztNetwork), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("https://my.zerotier.com/api/network/%s/member", ztNetwork), nil)
+	if err != nil {
+		panic(err)
+	}
 	req.Header.Add("Authorization", fmt.Sprintf("bearer %s", ztToken))
-	resp, _ := client.Do(req)
-	body, _ := ioutil.ReadAll(resp.Body)
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		panic(err)
+	}
 	json.Unmarshal(body, &ztResponse)
 	for _, member := range ztResponse {
 		ret[member.Name] = member.Config.IpAssignments[0]
