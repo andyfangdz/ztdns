@@ -53,7 +53,9 @@ func getZTDomainAddresses() map[string]string {
 	}
 	json.Unmarshal(body, &ztResponse)
 	for _, member := range ztResponse {
-		ret[member.Name] = member.Config.IpAssignments[0]
+		if len(member.Config.IpAssignments) > 0 {
+			ret[member.Name] = member.Config.IpAssignments[0]
+		}
 	}
 	return ret
 }
