@@ -1,9 +1,10 @@
 FROM golang:alpine AS builder
-ADD https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 /usr/bin/dep
-RUN chmod +x /usr/bin/dep
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+    apk add --no-cache bash git openssh curl
+
+RUN curl -L https://github.com/golang/dep/releases/download/v0.5.0/dep-linux-amd64 -o /usr/bin/dep && \
+    chmod +x /usr/bin/dep
 
 WORKDIR $GOPATH/src/github.com/andyfangdz/ztdns
 COPY Gopkg.toml Gopkg.lock ./
@@ -15,5 +16,5 @@ FROM alpine
 COPY --from=builder /ztdns ./
 RUN apk add --no-cache ca-certificates && \
     update-ca-certificates
-ENTRYPOINT ["./ztdns"]
+ENTRYPOINT ["./ztdns", "-stderrthreshold=INFO"]
 EXPOSE 53

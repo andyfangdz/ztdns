@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  branch = "master"
+  digest = "1:1ba1d79f2810270045c328ae5d674321db34e3aae468eb4233883b473c5c0467"
+  name = "github.com/golang/glog"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
+
+[[projects]]
   digest = "1:57689550840d285f2da9e85356a66e626592a8b6f1170d7f2482438e64fe82e3"
   name = "github.com/miekg/dns"
   packages = ["."]
@@ -54,6 +62,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/golang/glog",
     "github.com/miekg/dns",
     "github.com/patrickmn/go-cache",
   ]
